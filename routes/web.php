@@ -13,10 +13,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'frontoffice\HomeController@index')->name('Frontoffice.home');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::middleware('auth')
+    ->namespace('Backoffice')
+    ->name('backoffice.')
+    ->prefix('backoffice')
+    ->group(function() {
+        Route::get('/', 'HomeController@index');
+        Route::resource('posts', PostController::class);
+    });
+
+
