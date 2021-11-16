@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'frontoffice\HomeController@index')->name('Frontoffice.home');
+Route::get('/', 'frontoffice\HomeController@index')->name('frontoffice.home');
 
 Auth::routes();
 
@@ -22,7 +22,7 @@ Route::middleware('auth')
     ->name('backoffice.')
     ->prefix('backoffice')
     ->group(function() {
-        Route::get('/', 'HomeController@index');
+        Route::get('/', 'HomeController@index')->name('home');
         Route::resource('posts', PostController::class);
     });
 
