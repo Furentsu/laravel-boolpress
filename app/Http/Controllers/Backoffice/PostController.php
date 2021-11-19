@@ -4,6 +4,9 @@ namespace App\Http\Controllers\BackOffice;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
+
 use App\Models\Post;
 
 class PostController extends Controller
@@ -27,7 +30,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('backoffice.posts.create');
     }
 
     /**
@@ -38,7 +41,15 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $data['post_date'] = Carbon::now();
+        $post = new Post();
+
+        $post->fill($data); 
+        $post->slug = Str::slug($post->title, '-');
+        $post->save();
+
+        return redirect()->route('backoffice.posts.show', compact('post'));
     }
 
     /**

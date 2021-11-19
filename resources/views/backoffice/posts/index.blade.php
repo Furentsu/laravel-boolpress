@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <header>
-
+            <h5><a href="{{route('backoffice.posts.create')}}">Create new post</a></h5>
         </header>
         
         <table class="table table-bordered table-dark">
