@@ -66,34 +66,43 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Post $post
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view("backoffice.posts.edit", compact("post"));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Post $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        $data = $request->all();
+        $data['post_date'] = Carbon::now();
+
+        $post->fill($data); 
+        $post->slug = Str::slug($post->title, '-');
+        $post->update();
+
+        return redirect()->route('backoffice.posts.show', compact('post'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Post $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return redirect()->route('backoffice.posts.index')->with('deleted_post', $post->title)->with("delete_notification", "The selected post has just been successfully removed FOREVER.");
     }
 }
