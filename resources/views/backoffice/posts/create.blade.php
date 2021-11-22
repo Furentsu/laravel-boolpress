@@ -10,10 +10,11 @@
                 <div class="form-group">
                     <legend class="h5">Tags</legend>
                     <div class="form-check form-check-inline">
+                        
                         @foreach ($tags as $tag)
                             <input type="checkbox" class="form-check-input mx-2" 
                             id="{{ $tag->id }}" value="{{$tag->id}}" 
-                            name="tags[]">
+                            name="tags[]" @if( in_array($tag->id, old('tags', []))) checked @endif>
 
                             <label class="form-check-label me-2" for="{{$tag->id}}">{{$tag->name}}</label>    
                         @endforeach
@@ -27,7 +28,7 @@
 
                 <div class="mb-3">
                     <label for="author" class="form-label">Author</label>
-                    <input type="text" class="form-control" id="author" name="author">
+                    <input type="text" class="form-control" id="author" name="author" value="{{old('author')}}">
                 </div>
 
                 <div class="mb-3">

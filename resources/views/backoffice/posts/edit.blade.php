@@ -10,22 +10,34 @@
 
                 <div class="mb-3">
                   <label for="title" class="form-label">Title</label>
-                  <input type="text" class="form-control" id="title" name="title" value="{{$post->title}}" required>
+                  <input type="text" class="form-control" id="title" name="title" value="{{$post->title}}" >
+                </div>
+
+                <div class="form-group">
+                    <legend class="h5">Tags</legend>
+                    <div class="form-check form-check-inline">
+                        @foreach ($tags as $tag)
+                            <input type="checkbox" class="form-check-input mx-2" id="{{$tag->id}}" value="{{$tag->id}}" name="tags[]" 
+                            @if( in_array($tag->id, old('tags', $post->tags->pluck('id')->toArray()))) checked @endif>
+
+                            <label class="form-check-label me-2" for="{{$tag->id}}">{{$tag->name}}</label>    
+                        @endforeach
+                    </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="author" class="form-label">Author</label>
-                    <input type="text" class="form-control" id="author" name="author" value="{{$post->author}}" required>
+                    <input type="text" class="form-control" id="author" name="author" value="{{old('author', $post->author)}}">
                 </div>
 
                 <div class="mb-3">
                     <label for="post_image" class="form-label">Image URL</label>
-                    <textarea class="form-control" id="post_image" name="post_image" required>{{$post->post_image}}</textarea>
+                    <textarea class="form-control" id="post_image" name="post_image">{{$post->post_image}}</textarea>
                 </div>
 
                 <div class="mb-3">
                     <label for="post_content" class="form-label">Post Content</label>
-                    <textarea class="form-control" id="post_content" name="post_content" required>{{$post->post_content}}</textarea>
+                    <textarea class="form-control" id="post_content" name="post_content">{{$post->post_content}}</textarea>
                 </div>
                 
                 <button type="submit" class="btn btn-primary">Save</button>
