@@ -44,6 +44,10 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required'
+        ]);
+
         $data = $request->all();
         $data['post_date'] = Carbon::now();
         $post = new Post();
@@ -76,7 +80,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view("backoffice.posts.edit", compact("post"));
+        $tags = Tag::all();
+        return view("backoffice.posts.edit", compact("post", "tags"));
     }
 
     /**
@@ -88,6 +93,10 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        $request->validate([
+            'title' => 'required'
+        ]);
+        
         $data = $request->all();
         $data['post_date'] = Carbon::now();
 
