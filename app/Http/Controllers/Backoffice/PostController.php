@@ -8,6 +8,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 
 use App\Models\Post;
+use App\Models\Tag;
+
 
 class PostController extends Controller
 {
@@ -30,7 +32,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('backoffice.posts.create');
+        $tags = Tag::all();
+        return view('backoffice.posts.create', compact('tags'));
     }
 
     /**
@@ -48,6 +51,8 @@ class PostController extends Controller
         $post->fill($data); 
         $post->slug = Str::slug($post->title, '-');
         $post->save();
+
+        if(array_key_exists('tags', $data)) $post->tags()->sync($data['tags']);
 
         return redirect()->route('backoffice.posts.show', compact('post'));
     }

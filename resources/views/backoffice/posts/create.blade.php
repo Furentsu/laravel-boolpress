@@ -7,6 +7,19 @@
             <form action="{{route('backoffice.posts.store')}}" method="POST">
                 @csrf
 
+                <div class="form-group">
+                    <legend class="h5">Tags</legend>
+                    <div class="form-check form-check-inline">
+                        @foreach ($tags as $tag)
+                            <input type="checkbox" class="form-check-input mx-2" 
+                            id="{{ $tag->id }}" value="{{$tag->id}}" 
+                            name="tags[]">
+
+                            <label class="form-check-label me-2" for="{{$tag->id}}">{{$tag->name}}</label>    
+                        @endforeach
+                    </div>
+                </div>
+
                 <div class="mb-3">
                   <label for="title" class="form-label">Title</label>
                   <input type="text" class="form-control" id="title" name="title">
