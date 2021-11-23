@@ -4,6 +4,17 @@
     <div class="container">
 
         <section id="post-form">
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>        
+            @endif
+
             <form action="{{route('backoffice.posts.store')}}" method="POST">
                 @csrf
 
@@ -23,22 +34,22 @@
 
                 <div class="mb-3">
                   <label for="title" class="form-label">Title</label>
-                  <input type="text" class="form-control" id="title" name="title">
+                  <input type="text" class="form-control" id="title" name="title" value="{{old('title', $post->title)}}">
                 </div>
 
                 <div class="mb-3">
                     <label for="author" class="form-label">Author</label>
-                    <input type="text" class="form-control" id="author" name="author" value="{{old('author')}}">
+                    <input type="text" class="form-control" id="author" name="author" value="{{old('author', $post->author)}}">
                 </div>
 
                 <div class="mb-3">
                     <label for="post_image" class="form-label">Image URL</label>
-                    <textarea class="form-control" id="post_image" name="post_image"> </textarea>
+                    <textarea class="form-control" id="post_image" name="post_image">{{old('post_image', $post->post_image)}}</textarea>
                 </div>
 
                 <div class="mb-3">
                     <label for="post_content" class="form-label">Post Content</label>
-                    <textarea class="form-control" id="post_content" name="post_content"> </textarea>
+                    <textarea class="form-control" id="post_content" name="post_content">{{old('post_content', $post->post_content)}}</textarea>
                 </div>
                 
                 <button type="submit" class="btn btn-primary">Create</button>

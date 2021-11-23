@@ -32,8 +32,9 @@ class PostController extends Controller
      */
     public function create()
     {
+        $post = new Post();
         $tags = Tag::all();
-        return view('backoffice.posts.create', compact('tags'));
+        return view('backoffice.posts.create', compact('tags', 'post'));
     }
 
     /**
@@ -44,8 +45,19 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
-            'title' => 'required'
+            // la chiave sarò il name corrispondente nel blade.php
+            // il valore sarà la lista dei requisiti per la validazione
+            'title' => 'required|string|unique:posts|max:120',
+            'author' => 'required',
+            'post_image' => "string|min:4",
+            'post_content' => 'required|string|min:30',
+            'tags' => 'nullable|exists:tags,id'
+        ],
+        [
+            "title.required" => 'The title field is required.',
+            'post_content.min' => 'Your post should be at least 30 characters long.'
         ]);
 
         $data = $request->all();
