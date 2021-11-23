@@ -19,6 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::namespace('Api')->group(function() {
+Route::namespace('Api')->name('api.')->group(function() {
     Route::resource('posts', 'PostController');
 });
