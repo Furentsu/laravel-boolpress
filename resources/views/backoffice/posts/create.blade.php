@@ -15,7 +15,7 @@
                 </div>        
             @endif
 
-            <form action="{{route('backoffice.posts.store')}}" method="POST">
+            <form action="{{route('backoffice.posts.store')}}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="form-group">
@@ -43,8 +43,8 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="post_image" class="form-label">Image URL</label>
-                    <textarea class="form-control" id="post_image" name="post_image">{{old('post_image', $post->post_image)}}</textarea>
+                    <label for="image" class="form-label">Image</label>
+                    <input type="file" class="form-control" placeholder="Choose an image" id="image" name="image" value="{{old('image', $post->post_image)}}">
                 </div>
 
                 <div class="mb-3">

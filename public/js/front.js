@@ -1990,6 +1990,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'PostList',
@@ -2000,20 +2024,30 @@ __webpack_require__.r(__webpack_exports__);
     return {
       posts: [],
       localhost: 'http://127.0.0.1:8000',
-      loading: false
+      loading: false,
+      current_page: null,
+      last_page: null
     };
   },
-  created: function created() {
-    var _this = this;
+  methods: {
+    getPostList: function getPostList(page) {
+      var _this = this;
 
-    this.loading = true;
-    axios.get("".concat(this.localhost, "/api/posts/")).then(function (response) {
-      return _this.posts = response.data.posts;
-    })["catch"](function (err) {
-      console.error(err);
-    }).then(function () {
-      return _this.loading = false;
-    });
+      this.loading = true;
+      axios.get("".concat(this.localhost, "/api/posts/?page=").concat(page)).then(function (response) {
+        _this.posts = response.data.posts.data; // const {current_page} = response.data.posts;
+
+        _this.current_page = response.data.posts.current_page;
+        _this.last_page = response.data.posts.last_page;
+      })["catch"](function (err) {
+        console.error(err);
+      }).then(function () {
+        return _this.loading = false;
+      });
+    }
+  },
+  created: function created() {
+    this.getPostList();
   }
 });
 
@@ -3225,6 +3259,82 @@ var render = function () {
         : _vm._l(_vm.posts, function (post, index) {
             return _c("PostCard", { key: index, attrs: { post: post } })
           }),
+      _vm._v(" "),
+      _c("nav", { staticClass: "w-100" }, [
+        _c(
+          "ul",
+          { staticClass: "pagination d-flex justify-content-center mt-5" },
+          [
+            _vm.current_page > 1
+              ? _c("li", { staticClass: "page-item" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "page-link",
+                      attrs: { "aria-label": "Previous" },
+                      on: {
+                        click: function ($event) {
+                          return _vm.getPostList(_vm.current_page - 1)
+                        },
+                      },
+                    },
+                    [
+                      _c("span", { attrs: { "aria-hidden": "true" } }, [
+                        _vm._v("«"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "sr-only" }, [
+                        _vm._v("Previous"),
+                      ]),
+                    ]
+                  ),
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm._l(_vm.last_page, function (n) {
+              return _c(
+                "li",
+                {
+                  key: n,
+                  staticClass: "page-item",
+                  class: { active: n === _vm.current_page },
+                  on: {
+                    click: function ($event) {
+                      return _vm.getPostList(n)
+                    },
+                  },
+                },
+                [_c("a", { staticClass: "page-link" }, [_vm._v(_vm._s(n))])]
+              )
+            }),
+            _vm._v(" "),
+            _vm.current_page < _vm.last_page
+              ? _c("li", { staticClass: "page-item" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "page-link",
+                      attrs: { "aria-label": "Next" },
+                      on: {
+                        click: function ($event) {
+                          return _vm.getPostList(_vm.current_page + 1)
+                        },
+                      },
+                    },
+                    [
+                      _c("span", { attrs: { "aria-hidden": "true" } }, [
+                        _vm._v("»"),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "sr-only" }, [_vm._v("Next")]),
+                    ]
+                  ),
+                ])
+              : _vm._e(),
+          ],
+          2
+        ),
+      ]),
     ],
     2
   )
@@ -3237,7 +3347,7 @@ var staticRenderFns = [
     return _c(
       "div",
       { staticClass: "spinner-grow", attrs: { role: "status" } },
-      [_c("span", { staticClass: "visually-hidden" }, [_vm._v("Loading...")])]
+      [_c("span", { staticClass: "visually-hidden" })]
     )
   },
 ]

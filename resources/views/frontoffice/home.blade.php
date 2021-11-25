@@ -21,8 +21,6 @@
                 margin: 0;
             }
 
-            
-
             .flex-center {
                 align-items: center;
                 display: flex;

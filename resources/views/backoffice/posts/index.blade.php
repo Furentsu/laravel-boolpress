@@ -51,5 +51,11 @@
                 @endforelse
             </tbody>
         </table>
+
+        <footer class="w-100">
+            <div class="d-flex justify-content-center">
+                {{ $posts->links() }}
+            </div>
+        </footer>
     </div>
 @endsection

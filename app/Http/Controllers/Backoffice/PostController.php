@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
+
 
 use App\Models\Post;
 use App\Models\Tag;
@@ -20,7 +22,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::paginate(10);
 
         return view('backoffice.posts.index', compact('posts'));
     }
@@ -47,11 +49,10 @@ class PostController extends Controller
     {
 
         $request->validate([
-            // la chiave sarò il name corrispondente nel blade.php
-            // il valore sarà la lista dei requisiti per la validazione
+            
             'title' => 'required|string|unique:posts|max:120',
             'author' => 'required',
-            'post_image' => "string|min:4",
+            // 'post_image' => "string|min:4",
             'post_content' => 'required|string|min:30',
             'tags' => 'nullable|exists:tags,id'
         ],
@@ -61,9 +62,10 @@ class PostController extends Controller
         ]);
 
         $data = $request->all();
-        $data['post_date'] = Carbon::now();
-        $post = new Post();
+        $data['post_date'] = Carbon::now(); 
+        $data['post_image'] = Storage::put('public', $data['image']);
 
+        $post = new Post();
         $post->fill($data); 
         $post->slug = Str::slug($post->title, '-');
         $post->save();
@@ -111,6 +113,7 @@ class PostController extends Controller
         
         $data = $request->all();
         $data['post_date'] = Carbon::now();
+        $data['post_image'] = Storage::put('public', $data['image']);
 
         $post->fill($data); 
         $post->slug = Str::slug($post->title, '-');

@@ -4,7 +4,7 @@
     <div class="container">
 
         <section id="post-form">
-            <form action="{{route('backoffice.posts.update', $post)}}" method="POST">
+            <form action="{{route('backoffice.posts.update', $post)}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -31,8 +31,8 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="post_image" class="form-label">Image URL</label>
-                    <textarea class="form-control" id="post_image" name="post_image">{{$post->post_image}}</textarea>
+                    <label for="image" class="form-label">Image</label>
+                    <input type="file" class="form-control" placeholder="Choose an image" id="image" name="image" value="{{old('image', $post->post_image)}}">
                 </div>
 
                 <div class="mb-3">

@@ -17,6 +17,11 @@ Route::get('/', 'frontoffice\HomeController@index')->name('frontoffice.home');
 
 Auth::routes();
 
+Route::resource('posts', PostController::class)->only([
+    'index',
+    'show'
+]);
+
 Route::middleware('auth')
     ->namespace('Backoffice')
     ->name('backoffice.')
