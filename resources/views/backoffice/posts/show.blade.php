@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="card">
-            <img class="card-img-top img-fluid" src="{{asset('storage/' . $post->post_image)}}" alt="{{$post->post_title}}">
+            <img class="card-img-top img-fluid" src="{{$img_prefix . $post->post_image}}" alt="{{$post->post_title}}">
             <div class="card-body">
             <h5 class="card-title">{{$post->title}}</h5>
             <h5 class="card-title">{{$post->author}}</h5>

@@ -22,7 +22,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::paginate(10);
+        $posts = Post::orderBy('post_date', 'desc')->paginate(10);
 
         return view('backoffice.posts.index', compact('posts'));
     }
@@ -52,7 +52,7 @@ class PostController extends Controller
             
             'title' => 'required|string|unique:posts|max:120',
             'author' => 'required',
-            // 'post_image' => "string|min:4",
+            'image' => 'image',
             'post_content' => 'required|string|min:30',
             'tags' => 'nullable|exists:tags,id'
         ],
@@ -83,7 +83,13 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('backoffice.posts.show', compact('post'));
+        $img_prefix = "";
+        if(str_starts_with($post->post_image, 'https://via.placeholder.com')) {
+            $img_prefix = "";
+        } else {
+            $img_prefix = asset('storage') . '/';
+        }
+        return view('backoffice.posts.show', compact('post', 'img_prefix'));
     }
 
     /**
@@ -108,7 +114,16 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         $request->validate([
-            'title' => 'required'
+            
+            'title' => 'required|string|unique:posts|max:120',
+            'author' => 'required',
+            'image' => 'image',
+            'post_content' => 'required|string|min:30',
+            'tags' => 'nullable|exists:tags,id'
+        ],
+        [
+            "title.required" => 'The title field is required.',
+            'post_content.min' => 'Your post should be at least 30 characters long.'
         ]);
         
         $data = $request->all();
