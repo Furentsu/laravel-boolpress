@@ -15,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'frontoffice\HomeController@index')->name('frontoffice.home');
 
+Route::get('/contacts', 'frontoffice\HomeController@showContactForm')->name('frontoffice.contacts'); // Email Create
+Route::post('/contacts', 'frontoffice\HomeController@ContactFormHandler')->name('frontoffice.contacts.send'); // Email Store
+Route::get('/thanks', 'frontoffice\HomeController@ContactFormThanks')->name('frontoffice.thanks'); // Redirect
+
+
+
 Auth::routes();
 
 Route::resource('posts', PostController::class)->only([
